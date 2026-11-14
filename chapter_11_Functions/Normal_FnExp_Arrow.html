@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Normal vs Expression vs Arrow</title>
+<style>
+  :root{--bg:#fffaf0;--fg:#222;--card:#fff;--code:#f3f0e8;--a:#ff8a3d;--b:#3d9bff;--c:#35c27a}
+  @media (prefers-color-scheme:dark){:root{--bg:#1b1b1f;--fg:#eee;--card:#26262c;--code:#16161a}}
+  *{box-sizing:border-box}
+  body{margin:0;padding:16px;background:var(--bg);color:var(--fg);font:18px/1.4 system-ui,sans-serif}
+  h1{text-align:center;font-size:1.6rem}
+  .grid{display:grid;gap:16px;max-width:1000px;margin:auto;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+  .card{background:var(--card);border-radius:20px;padding:18px;border-top:8px solid var(--c);box-shadow:0 2px 8px #0002}
+  .card.a{border-color:var(--a)}.card.b{border-color:var(--b)}
+  .big{font-size:4rem;text-align:center}
+  h2{margin:.2em 0;text-align:center}
+  .tag{text-align:center;font-style:italic;margin-bottom:8px}
+  pre{background:var(--code);padding:10px;border-radius:10px;overflow-x:auto;font-size:.8rem;margin:8px 0}
+  ul{padding-left:0;list-style:none;margin:0}
+  li{margin:6px 0}
+  table{border-collapse:collapse;width:100%;max-width:1000px;margin:24px auto;background:var(--card);border-radius:12px;overflow:hidden;font-size:.9rem}
+  th,td{padding:8px;text-align:center;border-bottom:1px solid #8883}
+  th:first-child,td:first-child{text-align:left}
+</style>
+</head>
+<body>
+<h1>3 ways to make a function 🛠️</h1>
+
+<div class="grid">
+  <div class="card a">
+    <div class="big">🏷️</div>
+    <h2>Normal</h2>
+    <div class="tag">"Has a name tag. Everyone knows it from the start."</div>
+<pre>function add(a, b) {
+  return a + b;
+}</pre>
+    <ul>
+      <li>✅ Works <b>before</b> it's written (hoisted)</li>
+      <li>✅ Own <code>this</code> &amp; <code>arguments</code></li>
+      <li>✅ Can use <code>new</code></li>
+    </ul>
+  </div>
+
+  <div class="card b">
+    <div class="big">📦</div>
+    <h2>Expression</h2>
+    <div class="tag">"A function put inside a box (variable)."</div>
+<pre>const add = function (a, b) {
+  return a + b;
+};</pre>
+    <ul>
+      <li>❌ Not ready until the box line runs</li>
+      <li>✅ Can be nameless (anonymous)</li>
+      <li>✅ Own <code>this</code> &amp; <code>arguments</code></li>
+      <li>✅ Can use <code>new</code></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="big">➡️</div>
+    <h2>Arrow</h2>
+    <div class="tag">"The short, lazy version."</div>
+<pre>const add = (a, b) => a + b;</pre>
+    <ul>
+      <li>❌ Not ready until the box line runs</li>
+      <li>✂️ Short; one-liner returns by itself</li>
+      <li>🙈 No own <code>this</code> (borrows from outside)</li>
+      <li>🙈 No <code>arguments</code></li>
+      <li>🚫 Can't use <code>new</code></li>
+    </ul>
+  </div>
+</div>
+
+<table>
+  <tr><th></th><th>Normal</th><th>Expression</th><th>Arrow</th></tr>
+  <tr><td>Hoisted (call before defining)</td><td>✅</td><td>❌</td><td>❌</td></tr>
+  <tr><td>Needs a name</td><td>✅</td><td>no</td><td>no</td></tr>
+  <tr><td>Own <code>this</code></td><td>✅</td><td>✅</td><td>❌</td></tr>
+  <tr><td><code>arguments</code></td><td>✅</td><td>✅</td><td>❌</td></tr>
+  <tr><td><code>new</code></td><td>✅</td><td>✅</td><td>❌</td></tr>
+  <tr><td>Implicit return</td><td>❌</td><td>❌</td><td>✅ (no <code>{}</code>)</td></tr>
+</table>
+
+<div class="grid">
+  <div class="card a">
+    <div class="big">⏰</div>
+    <h2>Hoisting</h2>
+<pre>hi();           // ✅ works
+function hi(){ console.log("hi") }
+
+hey();          // ❌ ReferenceError
+const hey = () => console.log("hey");</pre>
+  </div>
+  <div class="card b">
+    <div class="big">👈</div>
+    <h2><code>this</code></h2>
+<pre>const p = {
+  name: "Bhagya",
+  normal() { return this.name },   // "Bhagya"
+  arrow: () => this.name           // undefined
+};</pre>
+    <div class="tag">Arrow doesn't make its own <code>this</code>, so don't use it as an object method.</div>
+  </div>
+</div>
+
+<h1>🎯 Quick pick</h1>
+<div class="grid">
+  <div class="card a"><div class="big">🏷️</div><div class="tag">Normal → main, reusable functions</div></div>
+  <div class="card b"><div class="big">📦</div><div class="tag">Expression → store or pass a function around</div></div>
+  <div class="card"><div class="big">➡️</div><div class="tag">Arrow → short callbacks like <code>map</code>, <code>filter</code></div></div>
+</div>
+</body>
+</html>
