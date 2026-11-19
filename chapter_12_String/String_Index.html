@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Index view of URL</title>
+<style>
+  body { font: 16px/1.6 system-ui, -apple-system, Segoe UI, sans-serif;
+         max-width: 1100px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; }
+  h1 { font-size: 1.4rem; border-bottom: 2px solid #eee; padding-bottom: .4rem; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; word-break: break-all; }
+  .wrap { overflow-x: auto; }
+  table { border-collapse: collapse; }
+  th, td { border: 1px solid #ddd; padding: .3rem .5rem; text-align: center; white-space: nowrap; }
+  th { background: #f6f8fa; text-align: left; position: sticky; left: 0; }
+  td.code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .hl { background: #fff3bf; }
+</style>
+</head>
+<body>
+<h1>Index view of URL</h1>
+<p><code id="u"></code></p>
+<p>Length: <code id="len"></code>. Highlighted = delimiters (<code>: / ? &amp; =</code>).</p>
+<div class="wrap"><table id="t"></table></div>
+<script>
+  const str = "https://staging.vwo.com/api/login?locked=false&retry=false";
+  u.textContent = str;
+  len.textContent = str.length;
+  const chars = [...str];
+  const row = (label, f, cls) =>
+    `<tr><th>${label}</th>${chars.map((c, i) =>
+      `<td class="${cls(c)}">${f(c, i)}</td>`).join("")}</tr>`;
+  const hl = c => ":/?&=".includes(c) ? "hl code" : "code";
+  t.innerHTML =
+    row("Character", c => c, hl) +
+    row("Positive index", (c, i) => i, hl) +
+    row("Negative index (at())", (c, i) => i - chars.length, hl);
+</script>
+</body>
+</html>
